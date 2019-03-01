@@ -1,0 +1,6 @@
+Dear ${PERSON_NAME},
+
+I sent this email with python so if you're getting this, then our project is already completed for us lol. We just have to 'refactor' the code so it isn't stolen anymore lol gang gang ok byeeee
+
+Sincerely,
+Jo Mama <3
