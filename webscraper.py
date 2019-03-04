@@ -14,7 +14,6 @@ def main():
 
     os.chdir(locationOfYourScript)
     pathToTXTfile = r'{}\today.txt'.format(os.getcwd())
-    pathToHTMLfile = r'{}\today.html'.format(os.getcwd())
     pathToArchiveFile = r'{}\archive.txt'.format(os.getcwd())
 
     # Getting today's date
@@ -39,6 +38,8 @@ def main():
     try:
         word = matchedObject.group(1)
         meaning = matchedObject.group(2)
+        synonyms = matchedObject.group(3)
+        usage = matchedObject.group(4)
 
         cleanedWord = re.sub('<.*?>', '', word)
         cleanedWord = re.sub('&#\d{2,4};', '', cleanedWord)
@@ -48,13 +49,22 @@ def main():
         cleanedMeaning = re.sub('&#\d{2,4};', '', cleanedMeaning)
         cleanedMeaning = re.sub('&nbsp;', ' ', cleanedMeaning)
 
-        entryForTextFile = "{}: {}".format(cleanedWord, cleanedMeaning)
+        cleanedSynonyms = re.sub('<.*?>', '', synonyms)
+        cleanedSynonyms = re.sub('&#\d{2,4};', '', cleanedSynonyms)
+        cleanedSynonyms = re.sub('&nbsp;', ' ', cleanedSynonyms)
+
+        cleanedUsage = re.sub('<.*?>', '', usage)
+        cleanedUsage = re.sub('&#\d{2,4};', '', cleanedUsage)
+        cleanedUsage = re.sub('&nbsp;', ' ', cleanedUsage)
+
+        entryForTextFile = "{}: {} Synonyms: {}. {}".format(cleanedWord, cleanedMeaning, cleanedSynonyms, cleanedUsage)
 
         with open(pathToTXTfile, 'a') as fileHandler:
                     fileHandler.write("- {}\n".format(entryForTextFile))
 
     except:
-        print("Error in retrieving information from Dictionary.com [http://dictionary.reference.com/wordoftheday/].", file = sys.stderr)
+        print("Error in retrieving information from The Free Dictionary [http://www.thefreedictionary.com/].", file = sys.stderr)
+
 
 
     ## APPENDING TODAY'S CONTENTS TO ARCHIVE
