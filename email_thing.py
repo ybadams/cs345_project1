@@ -46,10 +46,13 @@ def main():
     for name, email in zip(names, emails):
         msg = MIMEMultipart()       # create a message
 
-        # add in the actual person name to the message template
-        file = open('today.txt', 'r')
-        contents = file.read()
-        message = message_template.substitute({'PERSON_NAME' : name.title(), 'W_OTD' : contents})
+        wotd_file = open('today.txt', 'r')
+        wotd_contents = wotd_file.read()
+        weather_file = open('weather_today.txt', 'r')
+        weather_contents = weather_file.read()
+        
+        # add in the actual person name to the message template, as well as wotd contents and weather data contents
+        message = message_template.substitute({'PERSON_NAME' : name.title(), 'W_OTD' : wotd_contents, 'WEATHER_UPDATE' : weather_contents})
 
         print(message)
 
