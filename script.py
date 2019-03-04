@@ -9,4 +9,4 @@ import emailer
 if __name__ == "__main__":
     weatherscraper.main()
     wotdscraper.main()
-    email_thing.main()
+    emailer.main()
