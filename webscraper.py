@@ -65,15 +65,6 @@ def main():
     except:
         print("Error in retrieving information from The Free Dictionary [http://www.thefreedictionary.com/].", file = sys.stderr)
 
-
-
-    ## APPENDING TODAY'S CONTENTS TO ARCHIVE
-    with open(pathToTXTfile, 'r') as fileHandler:
-        contents = fileHandler.read()
-
-    with open(pathToArchiveFile, 'a') as fileHandler:
-        fileHandler.write("{}".format(contents))
-
     print("Done.")
     
 if __name__=="__main__":
