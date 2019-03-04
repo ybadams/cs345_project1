@@ -1,5 +1,7 @@
 Dear ${PERSON_NAME},
 
+${WEATHER_UPDATE}
+
 ${W_OTD}
 
 Sincerely,
