@@ -14,8 +14,6 @@ def main():
 
     os.chdir(locationOfYourScript)
     pathToTXTfile = r'{}\today.txt'.format(os.getcwd())
-    pathToHTMLfile = r'{}\today.html'.format(os.getcwd())
-    pathToArchiveFile = r'{}\archive.txt'.format(os.getcwd())
 
     # Getting today's date
     today = datetime.date.today().strftime("%A %d %B %Y")
@@ -28,43 +26,46 @@ def main():
 
 
     ## SCRAPING AND POPULATING TXT
-    ## DICTIONARY.COM
-    print("Fetching word of the day from Dictionary.com...")
+    #4 THE FREE DICTIONARY
+print("Fetching word of the day from The Free Dictionary...")
 
-    url = 'http://dictionary.reference.com/wordoftheday/'
-    source = requests.get(url)
+url = 'http://www.thefreedictionary.com/'
 
-    matchedObject = re.search(r'Definitions for <strong>(.+?)</strong>[\S\s\n]*?<li class="first"><span>(.+?)</span></li>', source.text)
+source = requests.get(url)
 
-    try:
-        word = matchedObject.group(1)
-        meaning = matchedObject.group(2)
+matchedObject = re.search(r'[\s\S\n]*?<a href=".*?/(.*?)">Definition</a>:</td>[\n\s]*?<td>(.*?)</td></tr>[\n\s]*?<tr>.*?Synonyms:.*?<td>(.*?)</td></tr>[\n\s]*?<tr>.*?Usage:.*?<td>(.*?)[\n\s]*?<a.*?>', source.text)
 
-        cleanedWord = re.sub('<.*?>', '', word)
-        cleanedWord = re.sub('&#\d{2,4};', '', cleanedWord)
-        cleanedWord = re.sub('&nbsp;', ' ', cleanedWord)
+try:
+    word = matchedObject.group(1)
+    meaning = matchedObject.group(2)
+    synonyms = matchedObject.group(3)
+    usage = matchedObject.group(4)
 
-        cleanedMeaning = re.sub('<.*?>', '', meaning)
-        cleanedMeaning = re.sub('&#\d{2,4};', '', cleanedMeaning)
-        cleanedMeaning = re.sub('&nbsp;', ' ', cleanedMeaning)
+    cleanedWord = re.sub('<.*?>', '', word)
+    cleanedWord = re.sub('&#\d{2,4};', '', cleanedWord)
+    cleanedWord = re.sub('&nbsp;', ' ', cleanedWord)
 
-        entryForTextFile = "{}: {}".format(cleanedWord, cleanedMeaning)
+    cleanedMeaning = re.sub('<.*?>', '', meaning)
+    cleanedMeaning = re.sub('&#\d{2,4};', '', cleanedMeaning)
+    cleanedMeaning = re.sub('&nbsp;', ' ', cleanedMeaning)
 
-        with open(pathToTXTfile, 'a') as fileHandler:
-                    fileHandler.write("- {}\n".format(entryForTextFile))
+    cleanedSynonyms = re.sub('<.*?>', '', synonyms)
+    cleanedSynonyms = re.sub('&#\d{2,4};', '', cleanedSynonyms)
+    cleanedSynonyms = re.sub('&nbsp;', ' ', cleanedSynonyms)
 
-    except:
-        print("Error in retrieving information from Dictionary.com [http://dictionary.reference.com/wordoftheday/].", file = sys.stderr)
+    cleanedUsage = re.sub('<.*?>', '', usage)
+    cleanedUsage = re.sub('&#\d{2,4};', '', cleanedUsage)
+    cleanedUsage = re.sub('&nbsp;', ' ', cleanedUsage)
 
+    entryForTextFile = "{}: {} Synonyms: {}. {}".format(cleanedWord, cleanedMeaning, cleanedSynonyms, cleanedUsage)
 
-    ## APPENDING TODAY'S CONTENTS TO ARCHIVE
-    with open(pathToTXTfile, 'r') as fileHandler:
-        contents = fileHandler.read()
+    with open(pathToTXTfile, 'a') as fileHandler:
+                fileHandler.write("- {}\n".format(entryForTextFile))
 
-    with open(pathToArchiveFile, 'a') as fileHandler:
-        fileHandler.write("{}".format(contents))
+except:
+    print("Error in retrieving information from The Free Dictionary [http://www.thefreedictionary.com/].", file = sys.stderr)
 
-    print("Done.")
+print("Done.")
     
 if __name__=="__main__":
     main()
