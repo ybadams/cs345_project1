@@ -2,7 +2,6 @@ Dear ${PERSON_NAME},
 
 Here is the daily weather update for Richmond, IN (47374).
 ${WEATHER_UPDATE}
-
 ${W_OTD}
 
 Sincerely,
