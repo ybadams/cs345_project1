@@ -9,11 +9,9 @@ def C_to_F(degrees_C):
     return degrees_F
 
 def write_weather_data(result,zipcode):
-    C = result['main]['temp']
-    F = C_to_F(C)
     with open('weather_today.txt', 'w') as f:
-        f.write("Richmond's temperature: {}°C \n".format(C))
-        f.write("Richmond's temperature: {}°F \n".format(F))
+        f.write("Richmond's temperature: {}°C \n".format(result['main']['temp]))
+        f.write("Richmond's temperature: {}°F \n".format((result['main']['temp']) * 9 / 5) + 32))
         f.write("Wind speed: {} m/s \n".format(result['wind']['speed']))
         f.write("Description: {} \n".format(result['weather'][0]['description']))
         f.write("Weather: {} \n".format(result['weather'][0]['main']))
